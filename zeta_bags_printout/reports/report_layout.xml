@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            id="report_consignment_note"
+            model="consignment.notes"
+            string="Consignment Note"
+            report_type="qweb-pdf"
+            name="zeta_bags_printout.report_structure_consignment_note"
+            file="zeta_bags_printout.report_structure_consignment_note"
+            paperformat="zeta_bags_printout.cust_paperformat_consignment_note"
+        />
+    </data>
+</odoo>

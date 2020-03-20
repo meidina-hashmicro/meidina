@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_structure_consignment_note">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.internal_layout">
+                        <div class="page">
+                            <style>
+                                td { vertical-align: middle; }
+                                .left-part { width: 50% !important; float: left !important; margin-left: 5mm;}
+                                .right-part { width: 30% !important; float: right !important;}
+                                .one-line-fit { display: inline !important; }
+                                .one-line-block { display: inline-block !important; }
+                                .border-b-1-s-r { border-bottom: 1px solid ORANGE !important; padding-top: 2px;}
+                                .border-b-1-s-b { border-bottom: 1px solid BLACK !important; padding-top: 2px;}
+                                .table th, .table td { border-top: none !important; }
+                                .padright-5 { margin-left: 4px; }
+                            </style>
+                            <table class="table table-condensed" style="margin-top:7mm; margin-bottom:6mm; margin-left: 5mm;">
+                                <tr>
+                                    <td class="left-part" style="padding-left: 2px; padding-top:1px;">
+                                        <div class="one-line-fit" style="width:20% !important;">
+                                            <img class="pull-left" t-if="res_company.logo" t-att-src="'data:image/png;base64,%s' %res_company.logo" style="max-width: 100px !important; height: auto;"/>
+                                        	<span class="pull-left" style="font-family: 'Roboto'; font-size: 37px !important; color:black;">Consignment Receipt</span>
+                                        </div>
+                                        <div class="one-line-fit pull-right" style="width:78% !important;">
+                                            <span class="pull-left" style="font-size: 15px !important; color:black; margin-left:1px;">Nota Titip Jual</span>
+                                            <span class="pull-right" style="font-size: 15px; border: 1px solid ORANGE; width:58%; margin-left:1px;">No.<span style="margin: 15px !important;" t-field="o.zeta_sequence_num"/></span>
+                                        </div>
+                                        <div class="one-line-fit pull-left" style="width: 45% !important; margin-left:-99px; padding-top: 40px; border-bottom: 1px solid BLACK;">
+                                            <div>Tgl Terima: <span t-field="o.tgl_terima" t-options="{&quot;format&quot;: &quot;dd/MM/yyyy&quot;}"/></div>
+                                        </div>
+                                        <div class="one-line-fit pull-right border-b-1-s-r" style="width: 45% !important; padding-top: 22px;">
+                                            <div style="font-size: 10px!important;">(+14 hari)</div>
+                                            <div style="border: ORANGE;color:ORANGE">Tgl Ambil:<span style="padding-left:50px">/</span><span style="padding-left:50px">/20</span></div>
+                                        </div>
+                                      <!--   <div class="one-line-fit pull-right" style="width: 49% !important; padding-top: -3px; margin-top: px; border-bottom: 1px solid ORANGE">
+                                            <div style="font-size: 10px!important;">(+14 hari)</div>
+                                            <div style="border: ORANGE;color:ORANGE">Tgl Ambil:<span style="padding-left:50px">/</span><span style="padding-left:50px">/20</span></div>
+                                        </div>
+ -->                                        <div class="border-b-1-s-b pull-left" style="width: 100%;">Nama: <span t-field="o.nama"/></div>
+                                        <div class="border-b-1-s-b pull-left" style="width: 100%;">Alamat Tujuan Jika Retur: <span t-field='o.alamat_tujuan_jika_retur'/></div>
+                                        <table class="table table-condensed border-b-1-s-b">
+                                            <tr>
+                                                <td style="width: 40%;"></td>
+                                                <td>Kota: <span t-field="o.kota"/></td>
+                                                <td>Kode Pos: <span t-field="o.kode_pos"/></td>
+                                            </tr>
+                                        </table>
+                                        <div class="pull-left" style="width: 100%; border-bottom: 1px solid BLACK;">No Telp : <span t-field="o.no_telp"/></div>
+                                        <div class="pull-left" style="width: 100%; border-bottom: 1px solid BLACK;">Email : <span t-field="o.email"/></div>
+                                        <table class="table table-condensed border-b-1-s-b" style="width: 100%;">
+                                            <tr align="left">
+                                                <td>No Rekening : <span t-field="o.no_rekening"/></td>
+                                                <td>a/n : <span t-field="o.a_n"/></td>
+                                                <td>Bank : <span t-field="o.bank"/></td>
+                                            </tr>
+                                        </table>
+                                        <div class="pull-left">
+                                            <span t-if="o.type=='titp_jual'" class="fa fa-check-square-o"/>
+                                            <span t-if="not o.type=='titp_jual'" class="fa fa-square-o"/>
+                                             Titip Jual
+                                            <span t-if="o.type=='jual_lepas'" style="margin-left: 60px;" class="fa fa-check-square-o"/>
+                                            <span t-if="not o.type=='jual_lepas'" style="margin-left: 60px;" class="fa fa-square-o"/>
+                                             Jual Lepas
+                                        </div>
+                                        <div class="pull-right" style="border: 1px solid ORANGE; width:50%;">
+                                            <div class="one-line-fit" style="position: absolute;">
+                                                <div style="font-size: 8px!important;">Ekspektasi</div>
+                                                <div style="font-size: 8px!important;">Harga Anda</div>
+                                            </div>
+                                            <div class="one-line-fit" style="color: ORANGE; font-size: 16px!important; padding-left: 50px; vertical-align: middle;">IDR <span style="color:BLACK;" t-field="o.ekspektasi_harga_anda"/></div>
+                                        </div>
+                                        <br/>
+                                        <table class="table table-condensed" style="border: 1px solid ORANGE;font-size: 10px">
+                                            <tr style="width: 100%;">
+                                                <td>
+                                                    <div>Merek: <span t-field="o.zeta_number_id.name"/></div>
+                                                </td>
+                                            </tr>
+                                            <tr style="width: 100%; border: 1px solid BLACK;border-left: 1px solid ORANGE; border-right: 1px solid ORANGE;">
+                                                <td>
+                                                    <div>
+                                                        <div class="one-line-fit">Kategori: <span t-field="o.category"/></div>
+                                                        <div class="one-line-fit" style="padding-left: 30%;">Model: <span t-field="o.model"/></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="width: 100%;" cellspacing="0">
+                                                <td>
+                                                    <div class="pull-left" style="width: 100%;">
+                                                        <table class="table table-condensed">
+                                                            <tr style="border-bottom: 1px solid BLACK;">
+                                                                <td><span style="margin-left: -5px; margin-right: 5px;">Warna: </span><span t-field="o.color"/></td>
+                                                                <td style="border-left: 1px solid BLACK;">Ukuran: <span t-field="o.size"/></td>
+                                                            </tr>
+                                                            <tr style="border-bottom: 1px solid BLACK;">
+                                                                <td>
+                                                                    <div class="one-line-fit"><span style="margin-left: -5px; margin-right: 5px;">Tahun:</span> <span t-field="o.year"/></div>
+                                                                    <div class="one-line-fit" style="padding-left: 33%;">Kode Tgl: <span t-field="o.date_code"/></div>
+                                                                </td>
+                                                                <td style="width: 30%; border-left: 1px solid BLACK;">Insole: <span t-field="o.insole"/></td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                <td>
+                                                    <table class="table table-condensed" style="margin-top: -30px !important; margin-bottom: 0px !important;">
+                                                        <tr>
+                                                            <td>Kelengkapan: </td>
+                                                            <td>
+                                                                <span t-if="o.paperbag" class="fa fa-check-square-o"/>
+                                                                <span t-else="" style="color:ORANGE" class="fa fa-square-o"/>
+                                                                 Paperbag
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.padlock" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Padlock
+                                                             </td>
+                                                             <td>
+                                                                <span t-if="o.zeta_mirror" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Mirror
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span t-if="o.original_receipt" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Original Receipt
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.dustbag" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Dustbag
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.key" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Key
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.zeta_case" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Case
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span t-if="o.copy_receipt" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Copy Receipt
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.small_dustbag" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Small Dustbag
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.clochette" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Clochette
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.zeta_guarantee_card" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Guarantee Card
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span t-if="o.authentication_card" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Authentication Card
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.strap" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Strap
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.stopper" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Stopper
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.certificate" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Certificate
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span t-if="o.hologram_data_code" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Hologram/Date Code
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.controllato" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Controllato
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.raincoat" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Raincoat
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.zeta_others_hint" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                Others
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span t-if="o.ribbon" class="fa fa-check-square-o"/>
+                                                                <span t-else="" style="color:ORANGE" class="fa fa-square-o"/>
+                                                                 Ribbon
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.tags" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Tags
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.sample_leather" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Sample Leather
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.zeta_others_hint">
+                                                                	<u><span t-field="o.zeta_others_text"/></u>
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span t-if="o.camelia" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Camelia
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.booklet" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Booklet
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.cities" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Cities
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span t-if="o.box" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Box
+                                                            </td>
+                                                            <td>
+                                                                <span t-if="o.year_card" class="fa fa-check-square-o"/>
+                                                                <span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                                 Year Card
+                                                            </td>
+                                                            <td>
+                                                            	<span t-if="o.zeta_cloth" class="fa fa-check-square-o"/>
+                                                            	<span t-else="" class="fa fa-square-o" style="color:ORANGE"/>
+                                                               	Cloth
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                        </table>
+                                    </td>
+                                    <td class="right-part">
+                                        <div style="height: 378px !important; border: 1px solid ORANGE !important;">
+                                            <img t-if="o.category.image_medium" t-att-src="'data:image/png;base64,%s' % o.category.image_medium" style=" display: block; margin-top: 10px; margin-bottom: auto; margin-left: auto; margin-right: auto; max-height: 350px;"/>
+                                        </div>
+                                        <div style="height: 80px !important; border: 1px solid ORANGE !important; margin-top: -1px;">
+                                            <h5 style="color: ORANGE; margin:10px 10px 5px 10px !important;">NOTE</h5>
+                                            <p style="margin:0px 10px 10px 10px !important;"><span t-field="o.note"/></p>
+                                        </div>
+                                        <div style="height: 125.5px !important; border: 1px solid ORANGE !important; margin-top: -1px;">
+                                            <div class="one-line-fit pull-left" style="width: 35% !important; margin:10px -20px 5px 10px !important;">
+                                                Diterima Oleh:<br/><span style="font-family: 'Roboto-Light'; font-style:Italic;font-size:11px;">Received By</span>
+                                            </div>
+                                            <div class="one-line-fit pull-right" style="width: 65% !important; border-left: 1px solid ORANGE !important;">
+                                                <div style="margin-top: 10px !important;margin-left: 10px !important;">Penitip:</div>
+                                                <div style="margin-left: 10px !important; font-size:11px; font-family: 'Roboto-Light'; font-style:Italic;">Consignee</div>
+                                                <br/>
+                                                <br/>
+                                                <div style="margin-left: 2px !important; font-family:'DejaVu Sans Light'; font-size: 7px!important; margin-top: 7px !important;">
+                                                    <br/>
+                                                    *Seluruh data yang diisi merupakan benar dan dapat dipertanggung jawabkan  secara hukum 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 7px; font-family: 'DejaVu Sans Light';">
+                                        *Syarat dan ketentuan Consignment sebagaimana tercantum di dalam Consignment Term &amp; Consition yang
+                             		     merupakan satu kesatuan dan bagian yang tidak terpisahkan dengan Consignment Receipt.
+                             		     </div>
+                                    </td>
+                                </tr>
+                            </table>
+<!--                             <div class="container"> -->
+<!--                                 <div class="col-sm-12"> -->
+<!--                                     <div class="col-xs-3"> -->
+<!--                                         <p style="font-size: 14px;">Happiness is When You Get Our</p> -->
+<!--                                         <p style="text-align: left; font-weight: bolder; font-size: 42px;">AUTHENTIC<br/>BRANDED<br/>ITEMS</p><br/> -->
+<!--                                         <div style="height: 1px; border:1px solid black; width: 100%;"></div> -->
+<!--                                         <br/> -->
+<!--                                         <p style="font-size: 20px; font-weight: lighter;">OPENS EVERYDAY</p> -->
+<!--                                         <p style="font-size: 20px; font-weight: bold;">09 AM - 05 PM</p> -->
+<!--                                         <br/><br/><br/><br/> -->
+<!--                                         <p style="font-size: 14px;"> -->
+<!--                                             Kemang Square,<br/> -->
+<!--                                             JI, Kemang Raya No 3A<br/> -->
+<!--                                             Ground Floor G-6 &amp;<br/> -->
+<!--                                             First Floor I-4<br/> -->
+<!--                                         </p><br/> -->
+<!--                                         <table class="table table-condensed" style="margin-left: -5px !important;"> -->
+<!--                                             <tr> -->
+<!--                                                 <td style="width:25px;"> -->
+<!--                                                     <span style="font-size: 14px; margin-right: 25px;" >Admin</span> -->
+<!--                                                 </td> -->
+<!--                                                 <td> -->
+<!--                                                     <span style="font-size: 14px;">0813-1749-3336<br/>0812-8739-3733</span> -->
+<!--                                                 </td> -->
+<!--                                             </tr> -->
+<!--                                             <tr> -->
+<!--                                                 <td style="width:25px;"> -->
+<!--                                                     <span style="font-size: 14px; margin-right: 25px;" >Line</span> -->
+<!--                                                 </td> -->
+<!--                                                 <td> -->
+<!--                                                     <span style="font-size: 14px;">@zetabags</span> -->
+<!--                                                 </td> -->
+<!--                                             </tr> -->
+<!--                                             <tr> -->
+<!--                                                 <td style="width:25px;"> -->
+<!--                                                     <span class="fa-instagram" style="font-size: 14px; margin-right: 25px;"/> -->
+<!--                                                 </td> -->
+<!--                                                 <td> -->
+<!--                                                     <span style="font-size: 14px;">@zetabags</span> -->
+<!--                                                 </td> -->
+<!--                                             </tr> -->
+<!--                                         </table> -->
+<!--                                         <p style="font-weight: bold;">www.zetabags.com</p> -->
+<!--                                         <img t-if="res_company.logo" t-att-src="'data:image/png;base64,%s' %res_company.logo" style="max-width: 128px !important; height: auto;"/> -->
+<!--                                     </div> -->
+<!--                                     <div class="col-xs-9" style="border-left: 1px solid BLACK; padding-left: 50px !important;"> -->
+<!--                                         <span style="font-size: 40px;">Consignment Terms &amp; Conditions</span> -->
+<!--                                         <br/> -->
+<!--                                         <span style="font-size: 24px;">Syarat &amp; Ketentuan Penitipan Barang</span> -->
+<!--                                         <span class="pull-right" style="font-size: 10px; margin-top: 32px;">UPDATED VERSION : 08 APR 2019</span> -->
+<!--                                         <p style="font-size: 23px !important;">Syarat &amp; Ketentuan Penitipan Barang</p> -->
+<!--                                         <ol style="padding-left: 25px !important;"> -->
+<!--                                             1<li><span class="padright-5">_____ Saat ini kami hanya menerima barang dengan <strong>kondisi di atas 85%</strong> dan brand tertentu saja.</span></li> -->
+<!--                                             2<li><span class="padright-5">_____ Penitip harus mengisi <strong>formulir Consignment Receipt secara lengkap</strong> dan <strong>melampirkan foto KTP</strong>.</span></li> -->
+<!--                                             3<li><span class="padright-5">_____ Barang Anda akan kami data secara lengkap dan mendetail ke dalam database kami. Setelah itu, <strong>kondisi barang akan dilaporkan ulang</strong> kepada penitip.</span></li> -->
+<!--                                             4<li><span class="padright-5">_____ Setelah pengecekan lebih lanjut, penitip akan <strong>dihubungi oleh nomor "Zeta Bags Deal Harga"</strong>.</span></li> -->
+<!--                                             5<li><span class="padright-5">_____ Lama pengecekan <strong>tergantung antrian </strong>( MINIMAL 5 HARI KERJA setelah barang sudah didrop).</span></li> -->
+<!--                                             6<li><span class="padright-5">_____ Silahkan memberikan <strong>ekspektasi harga</strong> yang penitip inginkan di Consignment Receipt.</span></li> -->
+<!--                                             7<li><span class="padright-5">_____ "Zeta Bags Deals Harga" akan menawarkan rekomendasi harga dari ekspektasi tersebut agar cepat laku, namun harga tersebut <strong>masih bisa didiskusikan</strong> hingga SEPAKAT.</span></li> -->
+<!--                                             8<li><span class="padright-5">_____ Harga jual adalah harga yang kami naikkan dari harga yang telah disepakati.</span></li> -->
+<!--                                             9<li><span class="padright-5">_____ Penitip dilarang menaikkan harga dari kesepakatan awal.</span></li> -->
+<!--                                             10<li><span class="padright-5">_____ Barang Anda akan diproses jual ke seluruh channel penjualan Zeta Bags baik online maupun offline.</span></li> -->
+<!--                                             11<li><span class="padright-5">_____ <strong>Lama "masa eksklusif"</strong> consignment kami adalah <strong>14 hari</strong> dimulai sejak barang di-drop.</span></li> -->
+<!--                                             12<li><span class="padright-5">_____ <strong>Dalam "masa eksklusif"</strong> tersebut, penitip tidak diperkenankan menjualkan barang ke tempat lain ataupun mengambilnya. Jika <strong>dalam waktu tersebut</strong> penitip ingin mengambil barangnya, maka akan dikenakan biaya administrasi <strong>sebesar Rp. 250.000 per barang</strong>.</span></li> -->
+<!--                                             13<li><span class="padright-5">_____ Penitip <strong>dapat mengambil</strong> kembali barangnya setelah "masa eksklusif" berakhir atau memperpanjang masa consignment dengan penerapan harga baru <strong>TANPA dikenakan biaya administrasi</strong>.</span></li> -->
+<!--                                             14<li><span class="padright-5">_____ Lama masa consignment kami <strong>maksimal 2 bulan sejak barang di-drop</strong>. Apabila melampaui batas waktu tersebut maka penitip wajib mengambil kembali barang titipannya atau akan dikembalikan melalui jasa kurir/ekspedisi dan dikrim ke alamat yang tertera di Consignment Receipt.</span></li> -->
+<!--                                             15<li><span class="padright-5">_____ Barang yang tidak diambil lebih dari 2 bulan, <strong>tidak lagi menjadi tanggung jawab Zeta Bags</strong>.</span></li> -->
+<!--                                             16<li><span class="padright-5">_____ Jika barang laku, pembayaran akan ditransfer ke nomer rekening yang tertera di Consignment Receipt, <strong>5 hari setelah barang terjual</strong>.</span></li> -->
+<!--                                             <p style="font-size: 23px !important; margin-left: -25px;">Syarat &amp; Ketentuan Pengambilan Barang</p> -->
+<!--                                             17<li><span class="padright-5">_____ Penitip harus melakukan <strong>konfirmasi 1 hari sebelumnya</strong> (H-1) ke admin Zeta Bags.</span></li> -->
+<!--                                             18<li><span class="padright-5">_____ Pengambilan <strong>harus disertai Consignment Receipt</strong> yang asli.</span></li> -->
+<!--                                             19<li><span class="padright-5">_____ Jika pengambilan barang <strong>diwakilkan, harap menginfokan</strong> kepada kami dan menyertakan <strong>fotokopi KTP yang mengambil barang</strong>.</span></li> -->
+<!--                                             <span class="padright-5">*Seluruh ongkos pengiriman barang ditanggung oleh penitip.</span><br/> -->
+<!--                                             <span class="padright-5">*Zeta Bags juga dapat membantu pemesanan kurir.</span> -->
+<!--                                         </ol> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
